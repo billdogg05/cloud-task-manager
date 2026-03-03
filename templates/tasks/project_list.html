@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}Projects - Task Manager{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Projects</h2>
+    <a href="{% url 'project_create' %}" class="btn btn-dark btn-sm">+ New Project</a>
+</div>
+
+{% if projects %}
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Owner</th>
+                    <th>Tasks</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for project in projects %}
+                    <tr>
+                        <td class="fw-semibold">{{ project.title }}</td>
+                        <td><small class="text-muted">{{ project.description|truncatechars:60|default:"—" }}</small></td>
+                        <td>{{ project.owner.username }}</td>
+                        <td>{{ project.tasks.count }}</td>
+                        <td class="text-end">
+                            <a href="{% url 'project_update' project.pk %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                            <button type="button" class="btn btn-sm btn-outline-danger"
+                                    data-bs-toggle="modal" data-bs-target="#deleteProject{{ project.pk }}">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+
+                    <!-- Delete confirmation modal -->
+                    <div class="modal fade" id="deleteProject{{ project.pk }}" tabindex="-1">
+                        <div class="modal-dialog modal-sm">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h6 class="modal-title">Delete project?</h6>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p class="mb-0">Delete <strong>{{ project.title }}</strong>? All its tasks will be deleted too.</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <form method="post" action="{% url 'project_delete' project.pk %}" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <div class="text-center py-5 text-muted">
+        <p>No projects yet.</p>
+        <a href="{% url 'project_create' %}" class="btn btn-dark">Create your first project</a>
+    </div>
+{% endif %}
+{% endblock %}
