@@ -75,8 +75,8 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/task-manager:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/task-manager:${{ github.sha }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/cloud-task-manager:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/cloud-task-manager:${{ github.sha }}
 
   deploy:
     name: Deploy to Server
