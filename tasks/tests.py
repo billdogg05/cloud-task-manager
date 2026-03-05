@@ -40,6 +40,12 @@ def test_task_list_authenticated(client, user, db):
     assert response.status_code == 200
 
 
+def test_task_detail(client, user, task, db):
+    client.login(username='testuser', password='testpass123')
+    response = client.get(reverse('task_detail', args=[task.pk]))
+    assert response.status_code == 200
+
+
 def test_task_create(client, user, project, db):
     client.login(username='testuser', password='testpass123')
     response = client.post(reverse('task_create'), {
