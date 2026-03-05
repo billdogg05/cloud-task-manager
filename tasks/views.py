@@ -3,8 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import Q
 
-from .models import Project, Task
-from .forms import TaskForm, ProjectForm
+from .models import Project, Task, Comment
+from .forms import TaskForm, ProjectForm, CommentForm
 
 
 @login_required
@@ -13,6 +13,20 @@ def task_list(request):
         Q(assigned_to=request.user) | Q(project__owner=request.user) | Q(project__members=request.user)
     ).distinct().order_by('-created_at')
     return render(request, 'tasks/task_list.html', {'tasks': tasks})
+
+
+@login_required
+def task_detail(request, pk):
+    task = get_object_or_404(Task, pk=pk)
+    comments = task.comments.order_by('created_at')
+    form = CommentForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid():
+        comment = form.save(commit=False)
+        comment.task = task
+        comment.author = request.user
+        comment.save()
+        return redirect('task_detail', pk=pk)
+    return render(request, 'tasks/task_detail.html', {'task': task, 'comments': comments, 'form': form})
 
 
 @login_required

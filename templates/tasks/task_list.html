@@ -24,7 +24,7 @@
             <tbody>
                 {% for task in tasks %}
                     <tr>
-                        <td class="fw-semibold">{{ task.title }}</td>
+                        <td class="fw-semibold"><a href="{% url 'task_detail' task.pk %}" class="text-decoration-none text-dark">{{ task.title }}</a></td>
                         <td><small class="text-muted">{{ task.project.title }}</small></td>
                         <td>
                             {% if task.status == 'done' %}

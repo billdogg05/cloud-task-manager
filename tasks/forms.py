@@ -1,6 +1,6 @@
 from django import forms
 from django.db.models import Q
-from .models import Task, Project
+from .models import Task, Project, Comment
 
 
 class ProjectForm(forms.ModelForm):
@@ -33,3 +33,12 @@ class TaskForm(forms.ModelForm):
             self.fields['project'].queryset = Project.objects.filter(
                 Q(owner=user) | Q(members=user)
             ).distinct()
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['body']
+        widgets = {
+            'body': forms.Textarea(attrs={'rows': 3, 'class': 'form-control', 'placeholder': 'Add a comment...'}),
+        }
