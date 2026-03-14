@@ -28,11 +28,11 @@
                         <td><small class="text-muted">{{ task.project.title }}</small></td>
                         <td>
                             {% if task.status == 'done' %}
-                                <span class="badge bg-success">Done</span>
+                                <span class="badge bg-danger">Done</span>
                             {% elif task.status == 'in_progress' %}
-                                <span class="badge bg-warning text-dark">In Progress</span>
+                                <span class="badge bg-danger text-dark">In Progress</span>
                             {% else %}
-                                <span class="badge bg-secondary">To Do</span>
+                                <span class="badge bg-danger">To Do</span>
                             {% endif %}
                         </td>
                         <td>{{ task.assigned_to.username|default:"—" }}</td>
