@@ -15,7 +15,7 @@ services:
     restart: unless-stopped
 
   web:
-    image: ${DOCKERHUB_USERNAME}/cloud-task-manager:latest
+    image: ${billdogg}/cloud-task-manager:latest
     volumes:
       - static_files:/app/staticfiles
       - media_files:/app/media
